@@ -162,7 +162,7 @@ All you have to do is use the "Post A Tweet" action from the Twitter Connector, 
 <br> You won't have to implement those For each loops yourself, as they are automatically added when you input the dynamic variables. Also make sure to add your "file content" (the image) to the media section, so the image will be included with the text.
 <br>
 Our last action in this Logic App is to save the information to a database for further analytics. For this, we are using a Cosmos DB, although you can choose SQL or whatever other DB type you like, albeit with some modification to the following steps. In our case, we simply used the Cosmos DB "Create or update document", specifically Version 2. In the case of Cosmos our action looked like this:
-![image](https://user-images.githubusercontent.com/56144316/119689959-e7a37180-be0e-11eb-956b-e130fde38a89.png)
+![image](https://user-images.githubusercontent.com/56144316/119689959-e7a37180-be0e-11eb-956b-e130fde38a89.png)<br>
 If you want to copy that exactly, you can use this code: ```{
   "blob_etag": "@{body('Create_blob_2')?['ETag']}",
   "blob_filelocator": "@{body('Create_blob_2')?['FileLocator']}",
@@ -191,27 +191,28 @@ That is all for this initial DB, which should allow you to send images to it eit
 
 # Phase 2
 
-You'll need all the things from Part 1, but you wil also a couple more things. 
-1. **A Twitter API Key**. - Be advised that your API Key for this may be banned while testing, so be careful and follow all the rules advised. To get the key itself, you can go to https://developer.twitter.com/en. Follow the instructions in the "apply" section.
+You'll need all the things from Part 1, but you wil also a couple more things. <br>
+&ensp;&ensp;&ensp;    1. **A Twitter API Key**. - Be advised that your API Key for this may be banned while testing, so be careful and follow all the rules advised. To get the key itself, you can go to https://developer.twitter.com/en. Follow the instructions in the "apply" section.
 <br>
-2. **Python**. - Install Python. In our case, we used 3.9.5. To download python, go to https://www.python.org/downloads/ <br>
-3. **Visual Studio Code** - You'll want to install Visual Studio Code, at this link: https://code.visualstudio.com/download. Once you have that installed, go into it and also download the Python and Azure Extensions, available on the left side of the screen.
+&ensp;&ensp;&ensp;    2. **Python**. - Install Python. In our case, we used 3.9.5. To download python, go to https://www.python.org/downloads/ <br>
+&ensp;&ensp;&ensp;    3. **Visual Studio Code** - You'll want to install Visual Studio Code, at this link: https://code.visualstudio.com/download. Once you have that installed, go into it and also download the Python and Azure Extensions, available on the left side of the screen.<br><br>
+
 The general makeup of this phase is pretty similar to the first. Instead of using an email trigger, we instead used a twitter connecter. This is designed to do the same task however, effectively checking if anything has been updated. ![image](https://user-images.githubusercontent.com/56144316/119693251-b8daca80-be11-11eb-90cf-962e1177c4d3.png)
-<br>
+<br><br>
 In our case, we simply looked whenever somebody would "@" our Twitter account. <br>
 After the connector we go back to similar fields as phase 1. The biggest thing that changes is the main for each loop goes is focused on the media urls of the tweet, not the email's attachments. This for each loop also serves as a protection from if the account is "@ed" with text, since if the tweet does not contain the image media url the loop will just be skipped, and if a tweet contains multiple images, each one can be searched.
-<br>
+<br><br>
 ![image](https://user-images.githubusercontent.com/56144316/119694087-85e50680-be12-11eb-8fb4-2ff5ad93fc27.png)<br>
 Most of the changes are simply to change the dynamic variables from the Outlook ones to Twitter, although there is also another big change. Intstead of a "create file" action, we instead use the "upload file from URL action". This allows the actual image from twitter to be downloaded, with the source url taken being the "current item" of the for loop. The only big change here is the "Content-Type" in the HTTP trigger. We have no variables for the content type here, so instead we just send "application/octet-stream". <br><br>
 ![image](https://user-images.githubusercontent.com/56144316/119695984-5800c180-be14-11eb-8367-c376b877401a.png)
 <br>
-The Parse JSON also uses the exact same info as in phase 1. <br>
+The Parse JSON also uses the exact same info as in phase 1. <br><br>
 Now with the data, we are going to reply to the tweet that sent the image. You can use nearly the same code for the adding to database, albeit with some of the changes to account for the input being from Twitter, not an email.
 <br><br>
 The big change however is with the reply. For whatever reason the Twitter Connector does not have the ability for replys. At best you can quote tweet someone, although that is hard for the end user to actaully see it, and especially hard for anyone to actually see that your account is doing anything. For this, we will instead be using an Azure Function.
-<br>
+<br><br>
 Now you'll want to download the HTTP_TweepyReply Python file here in the repository and open it up in Visual Studio Code. I recommend you attempt to test it first. To do so, you'll want to press shift + f5. Then, in the terminal on the bottom of the screen you'll see a link to go to the connector. If you see some text in the top left corner, it should be working. If you want to test it, you'll have to create a system to send HttpRequests. You shoud be able to find a way to do this online.
-<br>
+<br><br>
 If the code seems working, you'll then want to deploy it to Azure. To do this, hit the big "A" on the left side of the screen. It will have an area to sign in to your server, which you should do. After doing so you should be able to see all of your resources. <br>
 Go to the functions area and enter into one of your resource groups. From there, create a function app, and hit "deploy to function app". Follow the steps on screen, and after it is completed you should see your function on the Azure Portal Website. <br><br>
 
@@ -231,5 +232,5 @@ Make sure to Input your keys for the keys as listed above. If you want to change
 From there, you are effectively done. I'd recommend attempting to try it out a few times before actually deploying it to the public. Aside from that, enjoy your new logic apps.
 <br><br>
 If you need to contact me, you can do so via email at adam@millerfamily.page or theadammiller56@gmail.com. Contact me with whatever you need. 
-<br>
+<br><br>
 Thanks for reading this, hope it has helped someone.
