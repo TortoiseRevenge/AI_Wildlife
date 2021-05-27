@@ -14,22 +14,22 @@ import azure.functions as func
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Begun Function')
-    try:
+    try: #Gets General Data from HTTP Body
         req_body = req.get_json()
         id = req_body.get('id')
         username = req_body.get('username')
         text = req_body.get('text')
     except:
-        return func.HttpResponse("Needs more Data in body")
+        return func.HttpResponse("Needs more Data in body") #This will happen if nothing is in the body, or if it is missing something.
     try:
-        auth = tweepy.OAuthHandler(req_body.get('ConsumerKey'), req_body.get('ConsumerSecret'))
-        auth.set_access_token(req_body.get('AccessToken'), req_body.get('AccessTokenSecret'))
+        auth = tweepy.OAuthHandler(req_body.get('ConsumerKey'), req_body.get('ConsumerSecret')) #Gets Oauth Authentication for twitter
+        auth.set_access_token(req_body.get('AccessToken'), req_body.get('AccessTokenSecret')) #Sets your api Token
         api = tweepy.API(auth)
-        logging.info("Preparing to Send")
-        api.update_status(f"@{username} {text}", in_reply_to_status_id = id)
+        logging.info("Preparing to Send") 
+        api.update_status(f"@{username} {text}", in_reply_to_status_id = id) #@s user with text from body as well as post to reply to.
         return func.HttpResponse(
             "This HTTP triggered function executed successfully.",
             status_code=200
         )
     except:
-        return func.HttpResponse("Failed To Post")
+        return func.HttpResponse("Failed To Post") #This will happen if your API code is wrong, or if it is banned.
