@@ -1,3 +1,13 @@
+#{
+#  "AccessToken": "TWITTER_ACCESS_TOKEN_KEY",
+#  "AccessTokenSecret": "TWITTER_ACCESS_TOKEN_SECRET_KEY",
+#  "ConsumerKey": "TWITTER_CONSUMER_KEY",
+#  "ConsumerSecret": "TWITTER_CONSUMER_SECRET_KEY",
+#  "id": "@{triggerBody()?['TweetId']}",
+#  "text": "We believe that is the @{items('For_each_3')?['species_common']}, of the family  @{items('For_each_3')?['family_common']}. We have a @{items('For_each_3')?['confidence']} % confidence",
+#  "username": "@{triggerBody()?['UserDetails']?['UserName']}"
+#}
+
 import tweepy
 import logging
 import azure.functions as func
