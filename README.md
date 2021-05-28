@@ -7,8 +7,8 @@ This project was originally designed to: <br>
     <br>
 While this "Phase 1" system is still here, our final product now also includes the ability to do everything the same, but step 1 is:<br>
     &ensp;&ensp;&ensp;1. Receive an image from Twitter<br>
-&ensp;and 3:<br>
-    &ensp;&ensp;&ensp;3. Reply to the image with Data<br>
+&ensp;and 3 is:<br>
+    &ensp;&ensp;&ensp;3. Reply to the image with classification<br>
     <br>
 This file will go over how exactly we were able to get this done using Azure and the functions in this repository.<br>
 # Phase 1
